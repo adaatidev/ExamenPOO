@@ -30,22 +30,6 @@ public class Empleado {
 		return dni;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public double getSalarioBase() {
-		return salarioBase;
-	}
-
-	public void setSalarioBase(double salarioBase) {
-		this.salarioBase = salarioBase;
-	}
-
-	public double getPorcentajeBonificacion() {
-		return porcentajeBonificacion;
-	}
-
 	/**
 	 * Actualiza el porcentaje de bonificación validando el rango permitido (0-25%)
 	 * 
@@ -62,10 +46,6 @@ public class Empleado {
 	 */
 	public static void setPrecioHoraExtra(double precioHoraExtra) {
 		Empleado.precioHoraExtra = precioHoraExtra;
-	}
-
-	public int getHorasExtras() {
-		return horasExtras;
 	}
 
 	/**

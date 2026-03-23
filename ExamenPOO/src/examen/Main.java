@@ -35,7 +35,7 @@ public class Main {
 				case 3 -> gestionarBusqueda(sc, gestor);
 				case 4 -> gestionarModificacionHoras(sc, gestor);
 				case 5 -> gestionarModificacionBonificacion(sc, gestor);
-				case 6 -> gestionarSeguroGlobal(sc);
+				case 6 -> gestionarPrecioHorasExtra(sc);
 				case 7 -> gestionarEliminacion(sc, gestor);
 				case 8 -> gestionarEstadisticas(gestor);
 				case 9 -> System.out.println("Gracias por usar el sistema. ¡Hasta pronto!");
@@ -68,14 +68,14 @@ public class Main {
 	}
 
 	/**
-	 * * Orquestación del alta de un nuevo vehículo. Valida que la matrícula no
-	 * exista y los rangos de datos
+	 * * Orquestación del alta de un nuevo empleado. Valida que el DNI no exista y
+	 * los rangos de datos
 	 */
 	private static void gestionarAlta(Scanner sc, ListadoEmpleados gestor) {
-		System.out.print("Dni: ");
+		System.out.print("DNI: ");
 		String dni = sc.nextLine();
 		if (gestor.buscarPorDni(dni) != null) {
-			System.out.println("Error: El empleado ya existe");
+			System.out.println("ERROR: El empleado ya existe");
 			return;
 		}
 		System.out.print("Nombre: ");
@@ -85,16 +85,16 @@ public class Main {
 		try {
 			Empleado nuevo = new Empleado(dni, nombre, salarioBase, porcentajeBonificacion);
 			gestor.anadirEmpleado(nuevo);
-			System.out.println("Vehículo registrado con éxito.");
+			System.out.println("Empleado registrado con éxito");
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("ERROR:  " + e.getMessage());
 		}
 
 	}
 
-	/** Busca y muestra un vehículo específico */
+	/** Busca y muestra un empleado en específico */
 	private static void gestionarBusqueda(Scanner sc, ListadoEmpleados gestor) {
-		System.out.print("DNI a buscar: ");
+		System.out.print("DNI del empleado a buscar: ");
 		Empleado e = gestor.buscarPorDni(sc.nextLine());
 		if (e != null) {
 			System.out.println(e);
@@ -103,7 +103,7 @@ public class Main {
 		}
 	}
 
-	/** Actualiza los días que un vehículo ha sido alquilado */
+	/** Modifica las horas extra que un empleado ha realizado */
 	private static void gestionarModificacionHoras(Scanner sc, ListadoEmpleados gestor) {
 		System.out.print("DNI: ");
 		String dni = sc.nextLine();
@@ -111,11 +111,11 @@ public class Main {
 		if (gestor.modificarHorasExtra(dni, horas)) {
 			System.out.println("Horas extra actualizadas correctamente");
 		} else {
-			System.out.println("Error: Empleado no encontrado.");
+			System.out.println("ERROR: No se encontró ningún empleado con ese DNI");
 		}
 	}
 
-	/** Modifica el recargo premium validando el rango de negocio */
+	/** Modifica la bonificación validando el rango (0-30) */
 	private static void gestionarModificacionBonificacion(Scanner sc, ListadoEmpleados gestor) {
 		System.out.print("DNI: ");
 		String dni = sc.nextLine();
@@ -124,19 +124,19 @@ public class Main {
 			double nuevoPorcentaje = leerDoubleSeguro(sc, "Nuevo porcentaje (0-30): ");
 			try {
 				e.setPorcentajeBonificacion(nuevoPorcentaje);
-				System.out.println("Bonificación actualizada: ");
+				System.out.println("Bonificación actualizada");
 			} catch (IllegalArgumentException e1) {
-				System.out.println("Error: " + e1.getMessage());
+				System.out.println("ERROR: " + e1.getMessage());
 			}
 		} else {
-			System.out.println("Vehículo no encontrado");
+			System.out.println("ERROR: No se encontró ningún empleado con ese DNI");
 		}
 	}
 
 	/** Modifica el atributo estático que afecta a toda la flota */
-	private static void gestionarSeguroGlobal(Scanner sc) {
+	private static void gestionarPrecioHorasExtra(Scanner sc) {
 		double nuevoPrecio = leerDoubleSeguro(sc, "Nuevo precio de horas extra (global): ");
-		System.out.print("¿Confirmar eliminación? (S/N): ");
+		System.out.print("¿Confirmar modificación? (S/N): ");
 		if (sc.nextLine().equalsIgnoreCase("S")) {
 			Empleado.setPrecioHoraExtra(nuevoPrecio);
 			System.out.println("Precio de horas extra actualizado para todos los empleados");
@@ -145,25 +145,25 @@ public class Main {
 		}
 	}
 
-	/** Gestiona la eliminación con confirmación */
+	/** Gestiona la eliminación de un empleado con confirmación */
 	private static void gestionarEliminacion(Scanner sc, ListadoEmpleados gestor) {
-		System.out.print("DNI a eliminar: ");
+		System.out.print("DNI del empleado a eliminar: ");
 		String dni = sc.nextLine();
 		System.out.print("¿Confirmar eliminación? (S/N): ");
 		if (sc.nextLine().equalsIgnoreCase("S")) {
 			if (gestor.eliminarPorDni(dni)) {
 				System.out.println("Empleado eliminado del gestor");
 			} else {
-				System.out.println("Error: El empleado no existe");
+				System.out.println("ERROR: El empleado con ese DNI no existe");
 			}
 		}
 	}
 
-	/** Muestra el balance económico y los vehículos premium */
+	/** Muestra las bonificaciones y los empleados con alto desempeño */
 	private static void gestionarEstadisticas(ListadoEmpleados gestor) {
 		System.out.println("--- GASTO TOTAL EN BONIFICACIONES ---");
-		System.out.printf("Total por Recargos Premium: ", gestor.calcularGastoBonificaciones());
-		System.out.println("--- EMPLEADOS CON ALTO DESEMPEÑO (>15%%) ---");
+		System.out.printf("Total por bonificaciones: ", gestor.calcularGastoBonificaciones());
+		System.out.println("--- EMPLEADOS CON ALTO DESEMPEÑO (>15%) ---");
 		gestor.listarEmpleadosAltoDesempenio();
 	}
 
