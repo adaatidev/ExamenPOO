@@ -81,13 +81,20 @@ public class Main {
 		System.out.print("Nombre: ");
 		String nombre = sc.nextLine();
 		double salarioBase = leerDoubleSeguro(sc, "Salario base: ");
-		double porcentajeBonificacion = leerDoubleSeguro(sc, "Porcentaje de bonificación (0-30): ");
-		try {
-			Empleado nuevo = new Empleado(dni, nombre, salarioBase, porcentajeBonificacion);
-			gestor.anadirEmpleado(nuevo);
-			System.out.println("Empleado registrado con éxito");
-		} catch (IllegalArgumentException e) {
-			System.out.println("ERROR:  " + e.getMessage());
+		// double porcentajeBonificacion = leerDoubleSeguro(sc, "Porcentaje de
+		// bonificación (0-30): ");
+		System.out.println("Porcentaje de bonificación: ");
+		double porcentajeBonificacion = sc.nextDouble();
+		if (porcentajeBonificacion >= 0 && porcentajeBonificacion <= 30) {
+			try {
+				Empleado nuevo = new Empleado(dni, nombre, salarioBase, porcentajeBonificacion);
+				gestor.anadirEmpleado(nuevo);
+				System.out.println("Empleado registrado con éxito");
+			} catch (IllegalArgumentException e) {
+				System.out.println("ERROR:  " + e.getMessage());
+			}
+		} else {
+			System.out.println("ERROR: El porcentaje debe estar entre 0 y 30");
 		}
 
 	}
@@ -135,27 +142,39 @@ public class Main {
 
 	/** Modifica el atributo estático que afecta a toda la flota */
 	private static void gestionarPrecioHorasExtra(Scanner sc) {
+		String respuesta = "";
 		double nuevoPrecio = leerDoubleSeguro(sc, "Nuevo precio de horas extra (global): ");
 		System.out.print("¿Confirmar modificación? (S/N): ");
-		if (sc.nextLine().equalsIgnoreCase("S")) {
+		respuesta = sc.next();
+		sc.nextLine();
+		if (respuesta.equalsIgnoreCase("S")) {
 			Empleado.setPrecioHoraExtra(nuevoPrecio);
 			System.out.println("Precio de horas extra actualizado para todos los empleados");
-		} else {
+		} else if (respuesta.equalsIgnoreCase("N")) {
 			System.out.println("Operación cancelada");
+		} else {
+			System.out.println("Opción no válida. Operación cancelada");
 		}
 	}
 
 	/** Gestiona la eliminación de un empleado con confirmación */
 	private static void gestionarEliminacion(Scanner sc, ListadoEmpleados gestor) {
+		String respuesta = "";
 		System.out.print("DNI del empleado a eliminar: ");
 		String dni = sc.nextLine();
-		System.out.print("¿Confirmar eliminación? (S/N): ");
-		if (sc.nextLine().equalsIgnoreCase("S")) {
+		System.out.print("¿Confirmar modificación? (S/N): ");
+		respuesta = sc.next();
+		sc.nextLine();
+		if (respuesta.equalsIgnoreCase("S")) {
 			if (gestor.eliminarPorDni(dni)) {
 				System.out.println("Empleado eliminado del gestor");
 			} else {
-				System.out.println("ERROR: El empleado con ese DNI no existe");
+				System.out.println("No se ha encontrado ningún empleado con ese DNI");
 			}
+		} else if (respuesta.equalsIgnoreCase("N")) {
+			System.out.println("Operación cancelada");
+		} else {
+			System.out.println("Opción no válida. Operación cancelada");
 		}
 	}
 
