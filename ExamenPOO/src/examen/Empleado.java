@@ -9,12 +9,13 @@ public class Empleado {
 	private int horasExtras;
 
 	/**
+	 * Constructor para crear un nuevo empleado
 	 * 
-	 * @param dni
-	 * @param nombre
-	 * @param salarioBase
-	 * @param porcentajeBonificacion
-	 * @param horasExtras
+	 * @param dni                    Identificador único del empleado
+	 * @param nombre                 Nombre del empleado
+	 * @param salarioBase            Salario base sin extras (ni bonificaciones y
+	 *                               tal)
+	 * @param porcentajeBonificacion Porcentaje entre 0 y 30
 	 */
 	public Empleado(String dni, String nombre, double salarioBase, double porcentajeBonificacion) {
 		this.dni = dni;
@@ -45,14 +46,20 @@ public class Empleado {
 		return porcentajeBonificacion;
 	}
 
+	/**
+	 * Actualiza el porcentaje de bonificación validando el rango permitido (0-25%)
+	 * 
+	 * @param porcentajeBonificacion
+	 */
 	public void setPorcentajeBonificacion(double porcentajeBonificacion) {
 		this.porcentajeBonificacion = porcentajeBonificacion;
 	}
 
-	public static double getPrecioHoraExtra() {
-		return precioHoraExtra;
-	}
-
+	/**
+	 * 
+	 * @param precioHoraExtra Nuevo coste de las horas extra aplicable a todos los
+	 *                        empleados
+	 */
 	public static void setPrecioHoraExtra(double precioHoraExtra) {
 		Empleado.precioHoraExtra = precioHoraExtra;
 	}
@@ -61,23 +68,35 @@ public class Empleado {
 		return horasExtras;
 	}
 
+	/**
+	 * @param horasExtras Número de horas extra realizadas por un empleado
+	 */
 	public void setHorasExtras(int horasExtras) {
 		this.horasExtras = horasExtras;
 	}
 
 	// MÉTODOS
+	/**
+	 * @return Importe calculado de las bonificaciones: salario base × porcentaje
+	 *         bonificación / 100
+	 */
 	public double getImporteBonificacion() {
 		return salarioBase * porcentajeBonificacion / 100;
 	}
 
+	/** @return Importe total de las horas extras según su precio */
 	public double getImporteHorasExtra() {
 		return horasExtras * precioHoraExtra;
 	}
 
+	/** @return Suma del salario base, bonificación y horas extra */
 	public double getImporteTotal() {
-		return salarioBase + getImporteBonificacion() + getImporteBonificacion();
+		return salarioBase + getImporteBonificacion() + getImporteHorasExtra();
 	}
 
+	/**
+	 * @return true si tiene bonificación es estrictamente superior al 15%
+	 */
 	public boolean tieneBonificacion() {
 		return porcentajeBonificacion > 15;
 	}

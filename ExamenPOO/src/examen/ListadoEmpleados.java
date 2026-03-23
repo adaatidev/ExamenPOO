@@ -29,7 +29,7 @@ public class ListadoEmpleados {
 	}
 
 	/**
-	 * Muestra por consola todos los vehículos o un aviso si está vacía
+	 * Muestra por consola todos los empleados o un aviso si está vacía
 	 */
 	public void listarTodos() {
 		if (empleados.isEmpty()) {
@@ -103,7 +103,7 @@ public class ListadoEmpleados {
 	}
 
 	/**
-	 * @return Suma total de los importes por recargo premium de toda la flota
+	 * @return Suma total de las bonificaciones de todos los empleados
 	 */
 	public double calcularGastoBonificaciones() {
 		double total = 0;
